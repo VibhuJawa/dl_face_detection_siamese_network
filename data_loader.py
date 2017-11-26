@@ -113,7 +113,7 @@ def show_faces_batch(sample_batched):
     plt.imshow(grid_2.numpy().transpose((1, 2, 0)))
 
 
-def curr_accuracy(test_loader):
+def curr_accuracy(test_loader,snet):
     correct = 0
     total = 0
     count = 0

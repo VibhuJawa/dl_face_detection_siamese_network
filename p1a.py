@@ -17,7 +17,7 @@ def get_args():
     parser = argparse.ArgumentParser(description="Main  Parser")
 
     parser.add_argument("--data", type=str, required=False, help="The data directory to use for training or testing.",default="lfw")
-    parser.add_argument("--augmentaion", type=str, required=False, help="Augmentation, add 'y' or 'n' ",default="y")
+    parser.add_argument("--augment", type=str, required=False, help="Augmentation, add 'y' or 'n' ",default="y")
 
     parser.add_argument("--load", type=str, required=False, help="(TEST MODE) Load weights file")
     parser.add_argument("--save", type=str, required=False, help="(TRAIN MODE) Save weights file")
@@ -41,7 +41,7 @@ def p1a():
         N = 20
 
 
-        if(args.augmentaion=='N'):
+        if(args.augment=="n"):
             print("Non daa augmentation Mode")
             face_train_dataset = dl.FacePairsDataset(txt_file='lfw/train.txt', root_dir='lfw/', transform=trans_test)
         else:
@@ -104,7 +104,7 @@ def p1a():
                 loss.backward()
                 optimizer.step()
 
-            ac_list.append(dl.curr_accuracy(test_loader))
+            ac_list.append(dl.curr_accuracy(test_loader,snet))
             print("Epoch number ", epoch)
 
         print('Finished Training')
@@ -114,7 +114,16 @@ def p1a():
     else:
         print "--Testing Mode---"
 
+        if torch.cuda.is_available():
+            snet_load = models.Siamese_Net().cuda()
+        else:
+            snet_load = models.Siamese_Net()
+        snet_load.load_state_dict(torch.load(args.load))
+        face_test_dataset = dl.FacePairsDataset(txt_file='lfw/test.txt', root_dir='lfw/', transform=trans_test)
+        test_loader = DataLoader(dataset=face_test_dataset, batch_size=N, shuffle=False, num_workers=4)
+        dl.curr_accuracy(test_loader,snet_load)
 
 
 if __name__ == '__main__':
+
     p1a()
