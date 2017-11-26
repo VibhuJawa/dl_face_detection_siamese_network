@@ -5,3 +5,5 @@
 snet*
 .idea/
 *.pyc
+model_*
+~$ReadMe.docx
