@@ -43,12 +43,12 @@ def p1a():
 
         if(args.augmentaion=='N'):
             print("Non daa augmentation Mode")
-            face_train_dataset = dl.FacePairsDataset(txt_file='train.txt', root_dir='lfw/', transform=trans_test)
+            face_train_dataset = dl.FacePairsDataset(txt_file='lfw/train.txt', root_dir='lfw/', transform=trans_test)
         else:
             print("Augmentation Mode")
-            face_train_dataset = dl.FacePairsDataset(txt_file='train.txt', root_dir='lfw/', transform=trans_train)
+            face_train_dataset = dl.FacePairsDataset(txt_file='lfw/train.txt', root_dir='lfw/', transform=trans_train)
 
-        face_test_dataset = dl.FacePairsDataset(txt_file='test.txt', root_dir='lfw/', transform=trans_test)
+        face_test_dataset = dl.FacePairsDataset(txt_file='lfw/test.txt', root_dir='lfw/', transform=trans_test)
 
         train_loader = DataLoader(dataset=face_train_dataset, batch_size=N, shuffle=True, num_workers=4)
         test_loader = DataLoader(dataset=face_test_dataset, batch_size=N, shuffle=False, num_workers=4)
@@ -79,7 +79,7 @@ def p1a():
         print("sanity check on 2 random variables ",temp.size())
 
         ac_list = []
-
+        print("Started Training")
         for epoch in range(10):  # loop over the dataset multiple times
             for i, sample_batched in enumerate(train_loader):
                 # get the inputs
