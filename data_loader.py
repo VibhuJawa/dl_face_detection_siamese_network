@@ -8,6 +8,7 @@ import numpy as np
 from torch.utils.data import Dataset
 from torchvision import  utils
 from torch.autograd import Variable
+import torch.nn.functional as F
 
 import random
 

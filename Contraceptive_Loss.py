@@ -1,3 +1,6 @@
+import torch
+import torch.nn.functional as F
+
 class ContrastiveLoss(torch.nn.Module):
     def __init__(self, margin=1.0):
         super(ContrastiveLoss, self).__init__()
