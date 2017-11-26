@@ -165,15 +165,14 @@ def curr_accuracy_2(test_loader,snet,threshold):
 
         output_1, output_2 = snet(input1, input2)
         outputs = torch.pow((F.pairwise_distance(output_1, output_2)), 2)
-        outputs_sigmoid = torch.sigmoid(outputs)
 
         # print (labels_batch)
 
-        outputs_sigmoid.data[outputs_sigmoid.data <= threshold] = -1
-        outputs_sigmoid.data[outputs_sigmoid.data >= threshold] = 0
-        outputs_sigmoid.data[outputs_sigmoid.data == -1] = 1
+        outputs.data[outputs.data <= threshold] = -1
+        outputs.data[outputs.data >= threshold] = 0
+        outputs.data[outputs.data == -1] = 1
 
-        predicted = outputs_sigmoid.data
+        predicted = outputs.data
 
         # print (predicted)
 

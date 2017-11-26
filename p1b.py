@@ -1,4 +1,5 @@
 import argparse
+
 from time import gmtime, strftime
 
 import torch
@@ -40,7 +41,7 @@ def p1a():
         trans_train = transforms.Compose([dl.random_augmetaion(), dl.ToTensor()])
         trans_test = transforms.Compose([dl.ToTensor()])
         N = 20
-        threshold=0.98
+        threshold=2
 
 
         if(args.augment=="N"):
@@ -82,7 +83,7 @@ def p1a():
         
         ac_list = []
         print("Started Training")
-        for epoch in range(25):  # loop over the dataset multiple times
+        for epoch in range(35):  # loop over the dataset multiple times
             for i, sample_batched in enumerate(train_loader):
                 # get the inputs
                 faces_1_batch, faces_2_batch = sample_batched['face_1'], sample_batched['face_2']
@@ -122,9 +123,9 @@ def p1a():
         snet_load.load_state_dict(torch.load(args.load))
         trans_test = transforms.Compose([dl.ToTensor()])
 
-        face_test_dataset = dl.FacePairsDataset(txt_file='lfw/test.txt', root_dir='lfw/', transform=trans_test)
+        face_test_dataset = dl.FacePairsDataset(txt_file='lfw/train.txt', root_dir='lfw/', transform=trans_test)
         test_loader = DataLoader(dataset=face_test_dataset, batch_size=N, shuffle=False, num_workers=4)
-        dl.curr_accuracy_2(test_loader,snet_load,0.98)
+        dl.curr_accuracy_2(test_loader,snet_load,2)
 
 
 if __name__ == '__main__':
