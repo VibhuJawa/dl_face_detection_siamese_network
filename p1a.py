@@ -1,7 +1,6 @@
 import argparse
 from time import gmtime, strftime
 
-import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -41,8 +40,8 @@ def p1a():
         N = 20
 
 
-        if(args.augment=="n"):
-            print("Non daa augmentation Mode")
+        if(args.augment=="N"):
+            print("Non data augmentation Mode")
             face_train_dataset = dl.FacePairsDataset(txt_file='lfw/train.txt', root_dir='lfw/', transform=trans_test)
         else:
             print("Augmentation Mode")
@@ -80,7 +79,7 @@ def p1a():
 
         ac_list = []
         print("Started Training")
-        for epoch in range(10):  # loop over the dataset multiple times
+        for epoch in range(15):  # loop over the dataset multiple times
             for i, sample_batched in enumerate(train_loader):
                 # get the inputs
                 faces_1_batch, faces_2_batch = sample_batched['face_1'], sample_batched['face_2']
@@ -108,17 +107,19 @@ def p1a():
             print("Epoch number ", epoch)
 
         print('Finished Training')
-        save_file_path = 'snet_' + args.save +'_augmentation_'+args.augmentaion
+        save_file_path = args.save 
         torch.save(snet.state_dict(), save_file_path)
 
     else:
         print "--Testing Mode---"
-
+	N=20
         if torch.cuda.is_available():
             snet_load = models.Siamese_Net().cuda()
         else:
             snet_load = models.Siamese_Net()
         snet_load.load_state_dict(torch.load(args.load))
+        trans_test = transforms.Compose([dl.ToTensor()])
+
         face_test_dataset = dl.FacePairsDataset(txt_file='lfw/test.txt', root_dir='lfw/', transform=trans_test)
         test_loader = DataLoader(dataset=face_test_dataset, batch_size=N, shuffle=False, num_workers=4)
         dl.curr_accuracy(test_loader,snet_load)

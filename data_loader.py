@@ -4,7 +4,7 @@ import torch
 import pandas as pd
 from skimage import io,transform as sk_transform
 import math
-import matplotlib.pyplot as plt
+import numpy as np
 from torch.utils.data import Dataset
 from torchvision import  utils
 from torch.autograd import Variable
@@ -16,7 +16,9 @@ class random_augmetaion(object):
 
     def random_augment_image(self, face):
         ## mirror flipping
-
+	flip_probab = random.random()
+        if flip_probab <=0.7:
+	  face = np.fliplr(face)
         # rotate image parmaeter:
         angle = math.radians(random.randrange(-30, +30))
 
