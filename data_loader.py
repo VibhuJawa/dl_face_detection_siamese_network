@@ -4,7 +4,6 @@ import torch
 import pandas as pd
 from skimage import io,transform as sk_transform
 import math
-import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 from torchvision import  utils
 from torch.autograd import Variable
