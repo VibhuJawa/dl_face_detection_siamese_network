@@ -1,5 +1,5 @@
 /lfw
-model*
+model_*
 /mnist_data
 .ipynb_checkpoints/
 .DS_Store
