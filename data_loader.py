@@ -146,5 +146,45 @@ def curr_accuracy(test_loader,snet):
     return ac
 
 
+def curr_accuracy_2(test_loader,snet,threshold):
+
+    correct = 0
+    total = 0
+    count = 0
+    ac = 100
+    for data in test_loader:
+        count = count + 1
+        faces_1_batch, faces_2_batch = data['face_1'], data['face_2']
+        labels_batch = data['label']
+
+        if torch.cuda.is_available():
+            input1, input2 = Variable(faces_1_batch.float().cuda()), Variable(faces_2_batch.float().cuda())
+        else:
+            input1, input2 = Variable(faces_1_batch.float()), Variable(faces_2_batch.float())
+
+        output_1, output_2 = snet(input1, input2)
+        outputs = torch.pow((F.pairwise_distance(output_1, output_2)), 2)
+        outputs_sigmoid = torch.sigmoid(outputs)
+
+        # print (labels_batch)
+
+        outputs_sigmoid.data[outputs_sigmoid.data <= threshold] = -1
+        outputs_sigmoid.data[outputs_sigmoid.data >= threshold] = 0
+        outputs_sigmoid.data[outputs_sigmoid.data == -1] = 1
+
+        predicted = outputs_sigmoid.data
+
+        # print (predicted)
+
+        total += labels_batch.size(0)
+        labels_batch = (labels_batch.view(-1, 1))
+
+        correct += (predicted.long().cpu() == labels_batch.long()).sum()
+
+    ac = 100 * (correct / total)
+    print('Accuracy of the network on the %d test images: %d %%' % (total, ac))
+    return ac
+
+
 
 

@@ -87,3 +87,18 @@ class Siamese_Net(torch.nn.Module):
         output = m(self.fc(x))
         return output
 
+
+class Siamese_Net_Contrastive(torch.nn.Module):
+    def __init__(self):
+        super(Siamese_Net_Contrastive, self).__init__()
+        if torch.cuda.is_available():
+            self.net = Net().cuda()
+        else:
+            self.net = Net()
+        self.fc = nn.Linear(2048, 1)
+
+    def forward(self, input1, input2):
+        return self.net(input1, input2)
+
+
+
