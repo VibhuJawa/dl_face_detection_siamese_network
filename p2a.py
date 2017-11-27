@@ -39,7 +39,7 @@ def p1a():
         trans_train = transforms.Compose([dl.random_augmetaion(), dl.ToTensor()])
         trans_test = transforms.Compose([dl.ToTensor()])
         N = 20
-        threshold=0.98
+        threshold=2
 
 
         if(args.augment=="N"):
