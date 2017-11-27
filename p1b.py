@@ -83,7 +83,7 @@ def p1a():
         
         ac_list = []
         print("Started Training")
-        for epoch in range(35):  # loop over the dataset multiple times
+        for epoch in range(20):  # loop over the dataset multiple times
             for i, sample_batched in enumerate(train_loader):
                 # get the inputs
                 faces_1_batch, faces_2_batch = sample_batched['face_1'], sample_batched['face_2']
