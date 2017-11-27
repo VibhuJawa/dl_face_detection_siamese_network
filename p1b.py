@@ -9,6 +9,9 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 from torchvision import transforms
 from torch.utils.data import DataLoader
+import numpy as np
+import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 
 import data_loader as dl
 import models
@@ -82,6 +85,8 @@ def p1a():
         print("sanity check with 2 random variables",o_1,o_2)
         
         ac_list = []
+        loss_list =[]
+        local_loss_list=[0]
         print("Started Training")
         for epoch in range(35):  # loop over the dataset multiple times
             for i, sample_batched in enumerate(train_loader):
@@ -103,13 +108,25 @@ def p1a():
                 # forward + backward + optimize
                 output_1, output_2 = snet(input1, input2)
                 loss = criterion(output_1, output_2, labels_batch)
+                local_loss_list.append(loss.data)
+                if i%20==0:
+                    local_loss_list_ar = np.asarray(local_loss_list)
+                    loss_list.append(local_loss_list_ar.mean())
+                    local_loss_list = []
+
+
                 loss.backward()
                 optimizer.step()
 
             ac_list.append(dl.curr_accuracy_2(test_loader,snet,threshold))
             print("Epoch number ", epoch)
 
+
         print('Finished Training')
+        c, = plt.plot(loss_list, label="Loss")
+        plt.savefig(args.save+'plot')
+
+
         save_file_path = args.save
         torch.save(snet.state_dict(), save_file_path)
 
