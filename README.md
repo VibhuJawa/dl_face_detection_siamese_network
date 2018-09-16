@@ -1,7 +1,8 @@
 # Face Detection using Siamese Network
 
+This repo explores face detection using Siamese Network (One Shot Learning) using contrastive loss. 
 ## Without Data Augmentation
-    #	Commands to run: 
+###	Commands to run: 
     python p1a.py --save  "model_p1a_non_augment" --augment "N"
     
 ##	Hyper Parameters:
